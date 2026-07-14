@@ -1,14 +1,28 @@
-// No GitHub, use a URL do Web App que você copiou no Passo 1
-const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbzO0Lpq9wFMROef3ldjsXDP5TrsfpWkC3J0l7FolbeyFwQeVIOhoWI_M8SdT7CQ8zOKXA/exec';
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>Portal do Colaborador</title>
+  </head>
+  <body>
+    <!-- Seu botão de acesso -->
+    <button id="btnEntrar">Acessar meu Contracheque</button>
 
-document.getElementById('btnEntrar').addEventListener('click', function() {
-  fetch(https://script.google.com/macros/s/AKfycbzO0Lpq9wFMROef3ldjsXDP5TrsfpWkC3J0l7FolbeyFwQeVIOhoWI_M8SdT7CQ8zOKXA/exec) 
-    .then(response => response.json())
-    .then(res => {
-       if (res.status === "ok") {
-         window.open(res.url, '_blank');
-       } else {
-         alert(res.msg);
-       }
-    });
-});
+    <script>
+      const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbzO0Lpq9wFMROef3ldjsXDP5TrsfpWkC3J0l7FolbeyFwQeVIOhoWI_M8SdT7CQ8zOKXA/exec';
+      
+      document.getElementById('btnEntrar').addEventListener('click', function() {
+        fetch(URL_DO_SEU_WEB_APP)
+          .then(response => response.json())
+          .then(res => {
+            if (res.status === "ok") {
+              window.open(res.url, '_blank');
+            } else {
+              alert(res.msg);
+            }
+          })
+          .catch(err => alert("Erro ao conectar: " + err));
+      });
+    </script>
+  </body>
+</html>
