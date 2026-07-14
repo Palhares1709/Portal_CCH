@@ -4,35 +4,42 @@
     <base target="_top">
     <style>
       body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-      button { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+      .container { text-align: center; }
+      input { padding: 10px; width: 250px; }
+      button { padding: 10px 20px; cursor: pointer; }
     </style>
   </head>
   <body>
-    <button id="btnEntrar">Acessar meu Contracheque</button>
-    <div id="mensagem"></div>
+    <div class="container">
+      <input type="email" id="email" placeholder="Seu e-mail corporativo">
+      <button id="btnEntrar">Acessar meu Contracheque</button>
+      <div id="mensagem" style="margin-top: 20px;"></div>
+    </div>
 
     <script>
-      // Esta é a URL da sua implantação (do Passo 1 do seu Apps Script)
-      const PROXY_URL = 'https://corsproxy.io/?';
+      // COLE AQUI A URL DO SEU WEB APP APÓS A IMPLANTAÇÃO
       const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec';
 
       document.getElementById('btnEntrar').addEventListener('click', function() {
-        document.getElementById('mensagem').innerText = "Validando sua conta Google...";
+        const email = document.getElementById('email').value;
+        const msg = document.getElementById('mensagem');
         
-        // Fazemos a chamada para o Apps Script
-        fetch(PROXY_URL + encodeURIComponent('https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec'))
-  .then(response => response.json())
-          .then(res => {
-            if (res.status === "ok") {
-              window.open(res.url, '_blank');
-              document.getElementById('mensagem').innerText = "Sucesso!";
+        if (!email) { msg.innerText = "Digite o e-mail!"; return; }
+        
+        msg.innerText = "Validando seu e-mail...";
+        
+        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email))
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "ok") {
+              msg.innerText = "Sucesso! Redirecionando...";
+              window.open(data.url, '_blank');
             } else {
-              document.getElementById('mensagem').innerHTML = '<span style="color:red">' + res.msg + '</span>';
+              msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
             }
           })
           .catch(err => {
-            console.error(err);
-            document.getElementById('mensagem').innerText = "Erro de conexão. Verifique se você está logado no Google.";
+            msg.innerHTML = '<span style="color:red">Erro na conexão.</span>';
           });
       });
     </script>
