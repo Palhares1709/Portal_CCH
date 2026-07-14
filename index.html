@@ -2,26 +2,37 @@
 <html>
   <head>
     <base target="_top">
-    <title>Portal do Colaborador</title>
+    <style>
+      body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+      button { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+    </style>
   </head>
   <body>
-    <!-- Seu botão de acesso -->
     <button id="btnEntrar">Acessar meu Contracheque</button>
+    <div id="mensagem"></div>
 
     <script>
+      // Esta é a URL da sua implantação (do Passo 1 do seu Apps Script)
       const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec';
-      
+
       document.getElementById('btnEntrar').addEventListener('click', function() {
+        document.getElementById('mensagem').innerText = "Validando sua conta Google...";
+        
+        // Fazemos a chamada para o Apps Script
         fetch(https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec)
           .then(response => response.json())
           .then(res => {
             if (res.status === "ok") {
               window.open(res.url, '_blank');
+              document.getElementById('mensagem').innerText = "Sucesso!";
             } else {
-              alert(res.msg);
+              document.getElementById('mensagem').innerHTML = '<span style="color:red">' + res.msg + '</span>';
             }
           })
-          .catch(err => alert("Erro ao conectar: " + err));
+          .catch(err => {
+            console.error(err);
+            document.getElementById('mensagem').innerText = "Erro de conexão. Verifique se você está logado no Google.";
+          });
       });
     </script>
   </body>
