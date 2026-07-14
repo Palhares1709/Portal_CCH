@@ -20,7 +20,7 @@
         document.getElementById('mensagem').innerText = "Validando sua conta Google...";
         
         // Fazemos a chamada para o Apps Script
-        fetch(PROXY_URL + encodeURIComponent(URL_DO_SEU_WEB_APP))
+        fetch(PROXY_URL + encodeURIComponent('https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec'))
   .then(response => response.json())
           .then(res => {
             if (res.status === "ok") {
