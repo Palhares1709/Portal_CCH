@@ -3,43 +3,53 @@
   <head>
     <base target="_top">
     <style>
-      body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-      .container { text-align: center; }
-      input { padding: 10px; width: 250px; }
-      button { padding: 10px 20px; cursor: pointer; }
+      body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+      .login-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
+      input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+      button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+      button:hover { background: #0056b3; }
+      #mensagem { margin-top: 15px; font-size: 14px; }
     </style>
   </head>
   <body>
-    <div class="container">
-      <input type="email" id="email" placeholder="Seu e-mail corporativo">
-      <button id="btnEntrar">Acessar meu Contracheque</button>
-      <div id="mensagem" style="margin-top: 20px;"></div>
+    <div class="login-card">
+      <h2>Acesso ao Contracheque</h2>
+      <input type="email" id="email" placeholder="Digite seu e-mail corporativo">
+      <button id="btnEntrar">Entrar</button>
+      <div id="mensagem"></div>
     </div>
 
     <script>
-      // COLE AQUI A URL DO SEU WEB APP APÓS A IMPLANTAÇÃO
+      // IMPORTANTE: Substitua a URL abaixo pela URL da sua Nova Implantação
       const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbzmxNZHO1C75zVbJC2Rp38epNnVkH_tcqdf3RZnLoJMoFk3aabnScBtXf0-lORElALdKQ/exec';
 
       document.getElementById('btnEntrar').addEventListener('click', function() {
         const email = document.getElementById('email').value;
         const msg = document.getElementById('mensagem');
         
-        if (!email) { msg.innerText = "Digite o e-mail!"; return; }
+        if (!email) {
+          msg.innerHTML = '<span style="color:red">Por favor, digite seu e-mail.</span>';
+          return;
+        }
+
+        msg.innerText = "Aguarde, validando seu acesso...";
         
-        msg.innerText = "Validando seu e-mail...";
-        
-        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email))
+        // Usamos o proxy para evitar bloqueio de CORS do navegador
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email));
+
+        fetch(proxyUrl)
           .then(response => response.json())
-          .then(data => {
-            if (data.status === "ok") {
-              msg.innerText = "Sucesso! Redirecionando...";
-              window.open(data.url, '_blank');
+          .then(res => {
+            if (res.status === "ok") {
+              msg.innerText = "Acesso autorizado! Redirecionando...";
+              window.open(res.url, '_blank');
             } else {
-              msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
+              msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
             }
           })
           .catch(err => {
-            msg.innerHTML = '<span style="color:red">Erro na conexão.</span>';
+            console.error(err);
+            msg.innerHTML = '<span style="color:red">Erro de conexão com o servidor.</span>';
           });
       });
     </script>
