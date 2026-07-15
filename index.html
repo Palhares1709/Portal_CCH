@@ -34,7 +34,7 @@
         msg.innerText = "Aguarde, validando seu acesso...";
         
         // Chamada direta para o Google sem o corsproxy.io
-        fetch(https://script.google.com/macros/s/AKfycbykzQvgEVLyLjnjI_BkMBw6OO8yBisDeewYq8-gu09jyCDu2FjQQVq6l1rUCCcRLY1Gdg/exec + "?email=" + encodeURIComponent(email), {
+        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
           method: 'GET',
           mode: 'cors'
         })
