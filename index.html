@@ -89,21 +89,25 @@
         loader.style.display = "block";
         msg.innerText = "Aguarde, validando seu acesso...";
         
-        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email))
-  .then(response => response.json())
-  .then(data => {
-    loader.style.display = "none";
-    if (data.status === "ok") {
-      msg.innerHTML = '<span style="color:green">Link enviado com sucesso para o seu e-mail!</span>';
-    } else {
-      msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
-    }
-  })
-  .catch(err => {
-    loader.style.display = "none";
-    msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
+        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
+          method: 'GET',
+          mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(data => {
+          loader.style.display = "none";
+          if (data.status === "ok") {
+            msg.innerHTML = '<span style="color:green">Link enviado com sucesso para o seu e-mail!</span>';
+          } else {
+            msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
+          }
+        })
+        .catch(err => {
+          loader.style.display = "none";
+          console.error(err);
+          msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
+        });
       });
-    });
     </script>
   </body>
 </html>
