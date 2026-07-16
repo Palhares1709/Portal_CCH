@@ -5,42 +5,60 @@
     <base target="_top">
     <style>
       body { 
-    font-family: 'Segoe UI', sans-serif; 
-    background: #f4f7f6; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; /* Alterado de height para min-height */
-    margin: 0; 
-  }
+        font-family: 'Segoe UI', sans-serif; 
+        background: #f4f7f6; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        min-height: 100vh; 
+        margin: 0; 
+      }
       .login-card { 
-    background: white; 
-    padding: 25px; 
-    border-radius: 10px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    width: 90%; /* Ocupa quase toda a largura */
-    max-width: 500px; /* Não deixa ficar gigante em monitores */
-    text-align: center; }
+        background: white; 
+        padding: 25px; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        width: 90%; 
+        max-width: 500px; 
+        text-align: center; 
+      }
       input { 
-    width: 100%; 
-    padding: 15px; /* Aumentado para facilitar o toque */
-    margin: 20px 0; 
-    border: 1px solid #ddd; 
-    border-radius: 5px; 
-    box-sizing: border-box; 
-    font-size: 16px; /* Evita zoom automático no iOS */
-  }
+        width: 100%; 
+        padding: 15px; 
+        margin: 20px 0; 
+        border: 1px solid #ddd; 
+        border-radius: 5px; 
+        box-sizing: border-box; 
+        font-size: 16px; 
+      }
       button { 
-    width: 100%; 
-    padding: 15px; 
-    background: #007bff; 
-    color: white; 
-    border: none; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    font-size: 18px; /* Texto um pouco maior */
-  }
+        width: 100%; 
+        padding: 15px; 
+        background: #007bff; 
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        font-size: 18px; 
+      }
       button:hover { background: #0056b3; }
+      
+      /* Estilo do loader */
+      .loader {
+        border: 4px solid #f3f3f6;
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 15px auto;
+        display: none; 
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
       #mensagem { margin-top: 15px; font-size: 14px; }
     </style>
   </head>
@@ -49,6 +67,10 @@
       <h2>Acesso ao Contracheque</h2>
       <input type="email" id="email" placeholder="Digite seu e-mail corporativo">
       <button id="btnEntrar">Entrar</button>
+      
+      <!-- Loader adicionado aqui -->
+      <div id="loader" class="loader"></div>
+      
       <div id="mensagem"></div>
     </div>
 
@@ -58,29 +80,32 @@
       document.getElementById('btnEntrar').addEventListener('click', function() {
         const email = document.getElementById('email').value;
         const msg = document.getElementById('mensagem');
+        const loader = document.getElementById('loader');
         
         if (!email) {
           msg.innerHTML = '<span style="color:red">Por favor, digite seu e-mail.</span>';
           return;
         }
 
+        // Mostra o loader e prepara o campo de mensagem
+        loader.style.display = "block";
         msg.innerText = "Aguarde, validando seu acesso...";
         
-        // Chamada direta para o Google sem o corsproxy.io
         fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
           method: 'GET',
           mode: 'cors'
         })
           .then(response => response.json())
           .then(res => {
+            loader.style.display = "none"; // Esconde o loader
             if (res.status === "ok") {
-              msg.innerText = "Acesso autorizado! Redirecionando...";
-              window.open(res.url, '_blank');
+              msg.innerHTML = 'Acesso autorizado! <br><a href="' + res.url + '" target="_blank" style="color: blue; font-weight: bold;">CLIQUE AQUI PARA ACESSAR</a>';
             } else {
               msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
             }
           })
           .catch(err => {
+            loader.style.display = "none"; // Esconde o loader em caso de erro
             console.error(err);
             msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
           });
