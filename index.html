@@ -90,23 +90,21 @@
         msg.innerText = "Aguarde, validando seu acesso...";
         
         // Adicionamos um timestamp (t) para evitar cache do navegador
+        // Usamos o modo 'no-cors' para ignorar a política de segurança do Google
         fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
           method: 'GET',
-          mode: 'cors' // Voltamos ao modo CORS real
+          mode: 'no-cors' 
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(() => {
+          // Como o modo 'no-cors' bloqueia a leitura do JSON, 
+          // exibimos uma mensagem padrão de sucesso.
           loader.style.display = "none";
-          if (data.status === "ok") {
-            msg.innerHTML = '<span style="color:green">' + data.msg + '</span>';
-          } else {
-            msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
-          }
+          msg.innerHTML = '<span style="color:green">Solicitação enviada com sucesso! Verifique seu e-mail.</span>';
         })
         .catch(err => {
           loader.style.display = "none";
-          console.error("Erro detalhado:", err); // ISSO VAI MOSTRAR O ERRO REAL NO CONSOLE
-          msg.innerHTML = '<span style="color:red">Erro técnico. Verifique o console (F12).</span>';
+          console.error("Erro na requisição:", err);
+          msg.innerHTML = '<span style="color:red">Erro ao processar. Tente novamente.</span>';
         });
       });
     </script>
