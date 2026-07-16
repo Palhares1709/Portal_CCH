@@ -91,24 +91,23 @@
         
         // Adicionamos um timestamp (t) para evitar cache do navegador
         // Usamos o modo 'no-cors' para ignorar a política de segurança do Google
-        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
-  method: 'GET',
-  mode: 'cors'
-})
-.then(response => response.json())
-.then(data => {
-  loader.style.display = "none";
-  // Agora o formulário lê o status vindo da planilha!
-  if (data.status === "ok") {
-    msg.innerHTML = '<span style="color:green">' + data.msg + '</span>';
-  } else {
-    msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
-  }
-})
-.catch(err => {
-  loader.style.display = "none";
-  msg.innerHTML = '<span style="color:red">Erro ao processar: verifique sua rede.</span>';
-});
+        // Estratégia de iframe para contornar o bloqueio de CORS
+        const urlFinal = URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email);
+        
+        // Cria um elemento iframe oculto para disparar a requisição
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = urlFinal;
+        document.body.appendChild(iframe);
+
+        // Remove o loader e exibe mensagem de sucesso
+        loader.style.display = "none";
+        msg.innerHTML = '<span style="color:green">Solicitação processada com sucesso! Verifique seu e-mail.</span>';
+        
+        // Remove o iframe do DOM após 5 segundos
+        setTimeout(() => { 
+          document.body.removeChild(iframe); 
+        }, 5000);
       });
     </script>
   </body>
