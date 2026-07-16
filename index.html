@@ -76,44 +76,38 @@
     <script>
       const URL_DO_SEU_WEB_APP = 'https://script.google.com/macros/s/AKfycbykzQvgEVLyLjnjI_BkMBw6OO8yBisDeewYq8-gu09jyCDu2FjQQVq6l1rUCCcRLY1Gdg/exec';
 
-document.getElementById('btnEntrar').addEventListener('click', function() {
-  const email = document.getElementById('email').value;
-  const msg = document.getElementById('mensagem');
-  const loader = document.getElementById('loader');
-  
-  if (!email) {
-    msg.innerHTML = '<span style="color:red">Por favor, digite seu e-mail.</span>';
-    return;
-  }
+      document.getElementById('btnEntrar').addEventListener('click', function() {
+        const email = document.getElementById('email').value;
+        const msg = document.getElementById('mensagem');
+        const loader = document.getElementById('loader');
+        
+        if (!email) {
+          msg.innerHTML = '<span style="color:red">Por favor, digite seu e-mail.</span>';
+          return;
+        }
 
-  loader.style.display = "block";
-  msg.innerText = "Aguarde, validando seu acesso...";
-  
-  fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
-    method: 'GET',
-    mode: 'cors'
-  })
-  .then(response => response.json())
-  .then(res => {
-    loader.style.display = "none";
-    if (res.status === "ok") {
-      msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
-    } else {
-      msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
-    }
-  })
-  .catch(err => {
-    loader.style.display = "none";
-    console.error(err);
-    msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
-  });
-             // ... resto do seu código
-  .catch(err => {
-    loader.style.display = "none";
-    console.error(err);
-    msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
-  }); // Este fecha o .catch
-}); // Este fecha o addEventListener
+        loader.style.display = "block";
+        msg.innerText = "Aguarde, validando seu acesso...";
+        
+        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
+          method: 'GET',
+          mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(res => {
+          loader.style.display = "none";
+          if (res.status === "ok") {
+            msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
+          } else {
+            msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
+          }
+        })
+        .catch(err => {
+          loader.style.display = "none";
+          console.error(err);
+          msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
+        });
+      });
     </script>
   </body>
 </html>
