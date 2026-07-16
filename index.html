@@ -105,7 +105,8 @@
         })
         .catch(err => {
           loader.style.display = "none";
-          msg.innerHTML = '<span style="color:red">Erro: E-mail não encontrado ou sem conexão.</span>';
+          console.error("Erro detalhado:", err); // ISSO VAI MOSTRAR O ERRO REAL NO CONSOLE
+          msg.innerHTML = '<span style="color:red">Erro técnico. Verifique o console (F12).</span>';
         });
       });
     </script>
