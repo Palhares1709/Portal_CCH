@@ -93,17 +93,22 @@
           method: 'GET',
           mode: 'cors'
         })
-          .then(response => response.json())
-          // ... dentro do seu fetch no GitHub
-.then(res => {
-  loader.style.display = "none";
-  if (res.status === "ok") {
-    // Agora informamos que o link foi enviado, sem abrir a pasta diretamente
-    msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
-  } else {
-    msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
-  }
-})          
+        .then(response => response.json())
+        .then(res => {
+          loader.style.display = "none";
+          // Exibe a mensagem vinda do seu Code.gs (seja sucesso ou erro)
+          if (res.status === "ok") {
+            msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
+          } else {
+            msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
+          }
+        })
+        .catch(err => {
+          loader.style.display = "none";
+          console.error(err);
+          // Esta mensagem só aparecerá se o servidor Google realmente não responder
+          msg.innerHTML = '<span style="color:red">Erro crítico de conexão. Tente novamente.</span>';
+        });   
           .catch(err => {
             loader.style.display = "none";
             console.error(err);
