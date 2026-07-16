@@ -68,7 +68,6 @@
       <input type="email" id="email" placeholder="Digite seu e-mail corporativo">
       <button id="btnEntrar">Entrar</button>
       
-      <!-- Loader adicionado aqui -->
       <div id="loader" class="loader"></div>
       
       <div id="mensagem"></div>
@@ -87,7 +86,6 @@
           return;
         }
 
-        // Mostra o loader e prepara o campo de mensagem
         loader.style.display = "block";
         msg.innerText = "Aguarde, validando seu acesso...";
         
@@ -97,15 +95,17 @@
         })
           .then(response => response.json())
           .then(res => {
-            loader.style.display = "none"; // Esconde o loader
+            loader.style.display = "none";
             if (res.status === "ok") {
-              msg.innerHTML = 'Acesso autorizado! <br><a href="' + res.url + '" target="_blank" style="color: blue; font-weight: bold;">CLIQUE AQUI PARA ACESSAR</a>';
+              msg.innerText = "Acesso autorizado! Redirecionando...";
+              // Redirecionamento automático imediato
+              window.open(res.url, '_blank');
             } else {
               msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
             }
           })
           .catch(err => {
-            loader.style.display = "none"; // Esconde o loader em caso de erro
+            loader.style.display = "none";
             console.error(err);
             msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
           });
