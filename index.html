@@ -107,7 +107,7 @@ document.getElementById('btnEntrar').addEventListener('click', function() {
     console.error(err);
     msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
   });
-});          .catch(err => {
+             .catch(err => {
             loader.style.display = "none";
             console.error(err);
             msg.innerHTML = '<span style="color:red">Erro de conexão. Verifique se o Web App está publicado.</span>';
