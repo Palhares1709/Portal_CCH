@@ -93,11 +93,12 @@
         // Usamos o modo 'no-cors' para ignorar a política de segurança do Google
         fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
   method: 'GET',
-  mode: 'cors' 
+  mode: 'cors'
 })
 .then(response => response.json())
 .then(data => {
   loader.style.display = "none";
+  // Agora o formulário lê o status vindo da planilha!
   if (data.status === "ok") {
     msg.innerHTML = '<span style="color:green">' + data.msg + '</span>';
   } else {
@@ -106,7 +107,7 @@
 })
 .catch(err => {
   loader.style.display = "none";
-  msg.innerHTML = '<span style="color:red">Erro de conexão.</span>';
+  msg.innerHTML = '<span style="color:red">Erro ao processar: verifique sua rede.</span>';
 });
       });
     </script>
