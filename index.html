@@ -95,13 +95,15 @@
         })
         .then(response => response.json())
         .then(res => {
-          loader.style.display = "none";
-          if (res.status === "ok") {
-            msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
-          } else {
-            msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
-          }
-        })
+    loader.style.display = "none";
+    if (res.status === "ok") {
+      // Aqui exibimos a mensagem de sucesso que vem do seu Apps Script
+      msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
+    } else {
+      // Aqui exibimos a mensagem de erro que vem do seu Apps Script
+      msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
+    }
+  })
         .catch(err => {
           loader.style.display = "none";
           console.error(err);
