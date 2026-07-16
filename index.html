@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
     <style>
-      body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-      .login-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
-      input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-      button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+      body { 
+    font-family: 'Segoe UI', sans-serif; 
+    background: #f4f7f6; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; /* Alterado de height para min-height */
+    margin: 0; 
+  }
+      .login-card { 
+    background: white; 
+    padding: 25px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    width: 90%; /* Ocupa quase toda a largura */
+    max-width: 500px; /* Não deixa ficar gigante em monitores */
+    text-align: center; }
+      input { 
+    width: 100%; 
+    padding: 15px; /* Aumentado para facilitar o toque */
+    margin: 20px 0; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    box-sizing: border-box; 
+    font-size: 16px; /* Evita zoom automático no iOS */
+  }
+      button { 
+    width: 100%; 
+    padding: 15px; 
+    background: #007bff; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 18px; /* Texto um pouco maior */
+  }
       button:hover { background: #0056b3; }
       #mensagem { margin-top: 15px; font-size: 14px; }
     </style>
