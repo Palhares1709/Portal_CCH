@@ -90,21 +90,22 @@
         msg.innerText = "Aguarde, validando seu acesso...";
         
         // Adicionamos um timestamp (t) para evitar cache do navegador
-        const urlComCacheBuster = URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email) + "&t=" + new Date().getTime();
-        
-        fetch(urlComCacheBuster, {
+        fetch(URL_DO_SEU_WEB_APP + "?email=" + encodeURIComponent(email), {
           method: 'GET',
-          mode: 'no-cors' // Modo "no-cors" evita o bloqueio de segurança
+          mode: 'cors' // Voltamos ao modo CORS real
         })
-        .then(() => {
+        .then(response => response.json())
+        .then(data => {
           loader.style.display = "none";
-          // Como o no-cors impede ler a resposta, exibimos a mensagem de sucesso padrão
-          msg.innerHTML = '<span style="color:green">Solicitação processada com sucesso! Verifique seu e-mail.</span>';
+          if (data.status === "ok") {
+            msg.innerHTML = '<span style="color:green">' + data.msg + '</span>';
+          } else {
+            msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
+          }
         })
         .catch(err => {
           loader.style.display = "none";
-          console.error(err);
-          msg.innerHTML = '<span style="color:red">Erro na tentativa de envio.</span>';
+          msg.innerHTML = '<span style="color:red">Erro: E-mail não encontrado ou sem conexão.</span>';
         });
       });
     </script>
