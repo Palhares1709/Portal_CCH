@@ -94,16 +94,16 @@
           mode: 'cors'
         })
           .then(response => response.json())
-          .then(res => {
-            loader.style.display = "none";
-            if (res.status === "ok") {
-              msg.innerText = "Acesso autorizado! Redirecionando...";
-              // Redirecionamento automático imediato
-              window.open(res.url, '_blank');
-            } else {
-              msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
-            }
-          })
+          // ... dentro do seu fetch no GitHub
+.then(res => {
+  loader.style.display = "none";
+  if (res.status === "ok") {
+    // Agora informamos que o link foi enviado, sem abrir a pasta diretamente
+    msg.innerHTML = '<span style="color:green">' + res.msg + '</span>';
+  } else {
+    msg.innerHTML = '<span style="color:red">' + res.msg + '</span>';
+  }
+})          
           .catch(err => {
             loader.style.display = "none";
             console.error(err);
