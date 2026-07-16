@@ -57,7 +57,27 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-      #mensagem { margin-top: 15px; font-size: 14px; }
+      
+      /* Estilo moderno para a notificação */
+      #mensagem { 
+        margin-top: 25px; 
+        font-size: 18px; 
+        font-weight: 600; 
+        line-height: 1.4;
+        padding: 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      .msg-sucesso {
+        color: #155724;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+      }
+      .msg-erro {
+        color: #721c24;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+      }
     </style>
   </head>
   <body>
@@ -80,7 +100,8 @@
         const loader = document.getElementById('loader');
         
         if (!email) {
-          msg.innerHTML = '<span style="color:red">Por favor, digite seu e-mail.</span>';
+          msg.className = "msg-erro";
+          msg.innerHTML = "❌ Por favor, digite seu e-mail.";
           return;
         }
 
@@ -92,9 +113,13 @@
         window[callbackName] = function(data) {
           loader.style.display = "none";
           if (data.status === "ok") {
-            msg.innerHTML = '<span style="color:green">' + data.msg + '</span>';
+            // Estilo moderno para sucesso
+            msg.className = "msg-sucesso";
+            msg.innerHTML = "✅ VERIFIQUE O SEU E-MAIL!<br><small style='font-size:14px; color:#555;'>Enviamos o acesso para sua caixa de entrada.</small>";
           } else {
-            msg.innerHTML = '<span style="color:red">' + data.msg + '</span>';
+            // Estilo moderno para erro
+            msg.className = "msg-erro";
+            msg.innerHTML = "❌ " + data.msg;
           }
           // Remove o script criado
           document.body.removeChild(script);
